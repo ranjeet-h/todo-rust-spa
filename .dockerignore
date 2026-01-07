@@ -1,0 +1,7 @@
+# Ignore local build artifacts to prevent Docker conflicts
+backend/target/
+frontend/node_modules/
+# Allow frontend/dist as it is needed for embedding
+!frontend/dist/
+.git/
+.env

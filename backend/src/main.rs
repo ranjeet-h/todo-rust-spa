@@ -131,6 +131,7 @@ async fn static_handler(uri: Uri, headers: HeaderMap) -> Response {
         if supports_br {
             let br_path = format!("{}.br", path);
             if let Some(content) = Asset::get(&br_path) {
+                tracing::debug!("Serving Brotli compressed: {}", br_path);
                 return Some((
                     [
                         (header::CONTENT_TYPE, mime.as_ref()),
@@ -145,6 +146,7 @@ async fn static_handler(uri: Uri, headers: HeaderMap) -> Response {
         if supports_gzip {
             let gz_path = format!("{}.gz", path);
             if let Some(content) = Asset::get(&gz_path) {
+                tracing::debug!("Serving Gzip compressed: {}", gz_path);
                 return Some((
                     [
                         (header::CONTENT_TYPE, mime.as_ref()),
@@ -157,6 +159,7 @@ async fn static_handler(uri: Uri, headers: HeaderMap) -> Response {
 
         // 3. Fallback to uncompressed
         if let Some(content) = Asset::get(path) {
+            tracing::debug!("Serving uncompressed: {}", path);
             return Some((
                 [(header::CONTENT_TYPE, mime.as_ref())],
                 content.data.into_owned(),
